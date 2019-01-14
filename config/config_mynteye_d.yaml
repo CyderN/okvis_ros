@@ -27,7 +27,7 @@ cameras:
        principal_point: [323.79245790179993, 254.72440572198897]}
 
 camera_params:
-    camera_rate: 20 # just to manage the expectations of when there should be frames arriving
+    camera_rate: 5 # just to manage the expectations of when there should be frames arriving20
     sigma_absolute_translation: 0.0 # The standard deviation of the camera extrinsics translation, e.g. 1.0e-10 for online-calib [m].
     sigma_absolute_orientation: 0.0 # The standard deviation of the camera extrinsics orientation, e.g. 1.0e-3 for online-calib [rad].
     sigma_c_relative_translation: 0.0 # The std. dev. of the cam. extr. transl. change between frames, e.g. 1.0e-6 for adaptive online calib (not less for numerics) [m].
@@ -44,7 +44,7 @@ imu_params:
     sigma_gw_c: 0.00088056 # gyro drift noise density [rad/s^s/sqrt(Hz)]
     sigma_aw_c: 2.04543326912e-05 # accelerometer drift noise density [m/s^2/sqrt(Hz)]
     tau: 3600.0 # reversion time constant, currently not in use [s]
-    g: 9.80579 # Earth's acceleration due to gravity [m/s^2]
+    g: 9.8013 # Earth's acceleration due to gravity [m/s^2]
     a0: [ 0.0, 0.0, 0.0 ] # Accelerometer bias [m/s^2]
     imu_rate: 200
     # tranform Body-Sensor (IMU)

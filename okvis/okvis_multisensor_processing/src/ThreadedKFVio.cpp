@@ -581,7 +581,7 @@ void ThreadedKFVio::imuConsumerLoop() {
 
       frontend_.propagation(imuMeasurements_, imu_params_, T_WS_propagated_,
                             speedAndBiases_propagated_, start, *end, &covariance,
-                            &jacobian);
+                            &jacobian);//use imu data, T_WS of previous time, speed and bias, covariance, jacobian to propagate.
       OptimizationResults result;
       result.stamp = *end;
       result.T_WS = T_WS_propagated_;

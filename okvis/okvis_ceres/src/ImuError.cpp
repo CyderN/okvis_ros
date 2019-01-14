@@ -302,7 +302,7 @@ int ImuError::propagation(const okvis::ImuMeasurementDeque & imuMeasurements,
     return -1;  // nothing to do...
 
   // initial condition
-  Eigen::Vector3d r_0 = T_WS.r();
+  Eigen::Vector3d r_0 = T_WS.r();//initial pose is obtained from old T_WS.
   Eigen::Quaterniond q_WS_0 = T_WS.q();
   Eigen::Matrix3d C_WS_0 = T_WS.C();
 
@@ -340,11 +340,11 @@ int ImuError::propagation(const okvis::ImuMeasurementDeque & imuMeasurements,
     if ((it + 1) == imuMeasurements.end()) {
       nexttime = t_end;
     } else
-      nexttime = (it + 1)->timeStamp;
-    double dt = (nexttime - time).toSec();
+      nexttime = (it + 1)->timeStamp;//next time = it +1 's time stamp
+    double dt = (nexttime - time).toSec(); //from time to it+1
 
 
-    if (end < nexttime) {
+    if (end < nexttime) { // 当 end 小于 nexttime 时，end 处 IMU 的测量值通过插值得到
       double interval = (nexttime - it->timeStamp).toSec();
       nexttime = t_end;
       dt = (nexttime - time).toSec();
