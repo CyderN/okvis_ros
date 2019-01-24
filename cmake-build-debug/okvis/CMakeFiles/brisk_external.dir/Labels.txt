@@ -1,0 +1,13 @@
+# Target labels
+ brisk_external
+# Source files and their labels
+/home/xcy/MYNT-EYE-OKVIS-Sample/cmake-build-debug/okvis/CMakeFiles/brisk_external
+/home/xcy/MYNT-EYE-OKVIS-Sample/cmake-build-debug/okvis/CMakeFiles/brisk_external.rule
+/home/xcy/MYNT-EYE-OKVIS-Sample/cmake-build-debug/okvis/CMakeFiles/brisk_external-complete.rule
+/home/xcy/MYNT-EYE-OKVIS-Sample/cmake-build-debug/okvis/brisk/src/brisk_external-stamp/brisk_external-install.rule
+/home/xcy/MYNT-EYE-OKVIS-Sample/cmake-build-debug/okvis/brisk/src/brisk_external-stamp/brisk_external-mkdir.rule
+/home/xcy/MYNT-EYE-OKVIS-Sample/cmake-build-debug/okvis/brisk/src/brisk_external-stamp/brisk_external-download.rule
+/home/xcy/MYNT-EYE-OKVIS-Sample/cmake-build-debug/okvis/brisk/src/brisk_external-stamp/brisk_external-update.rule
+/home/xcy/MYNT-EYE-OKVIS-Sample/cmake-build-debug/okvis/brisk/src/brisk_external-stamp/brisk_external-patch.rule
+/home/xcy/MYNT-EYE-OKVIS-Sample/cmake-build-debug/okvis/brisk/src/brisk_external-stamp/brisk_external-configure.rule
+/home/xcy/MYNT-EYE-OKVIS-Sample/cmake-build-debug/okvis/brisk/src/brisk_external-stamp/brisk_external-build.rule
