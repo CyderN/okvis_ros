@@ -6,6 +6,6 @@
     <remap from="/camera1" to="/mynteye/right/image_mono" />
     <remap from="/calibration0" to="/mynteye/left/camera_info" />
     <remap from="/calibration1" to="/mynteye/right/camera_info" />
-    <remap from="/imu" to="/mynteye/imu/data_raw" />
+    <remap from="/imu" to="/mynteye/imu/data_raw_processed" />
   </node>
 </launch>

@@ -341,7 +341,7 @@ int ImuError::propagation(const okvis::ImuMeasurementDeque & imuMeasurements,
       nexttime = t_end;
     } else
       nexttime = (it + 1)->timeStamp;//next time = it +1 's time stamp
-    double dt = (nexttime - time).toSec(); //from time to it+1
+    double dt = (nexttime - time).toSec(); //为什么???time在一个for循环里面是固定的？dt是该时刻距离propagation的时间
 
 
     if (end < nexttime) { // 当 end 小于 nexttime 时，end 处 IMU 的测量值通过插值得到
@@ -359,6 +359,7 @@ int ImuError::propagation(const okvis::ImuMeasurementDeque & imuMeasurements,
     Delta_t += dt;
 
     if (!hasStarted) {
+      // 同样对于输入初始时刻 IMU 的测量值通过插值得到
       hasStarted = true;
       const double r = dt / (nexttime - it->timeStamp).toSec();
       omega_S_0 = (r * omega_S_0 + (1.0 - r) * omega_S_1).eval();
@@ -368,6 +369,8 @@ int ImuError::propagation(const okvis::ImuMeasurementDeque & imuMeasurements,
     // ensure integrity
     double sigma_g_c = imuParams.sigma_g_c;
     double sigma_a_c = imuParams.sigma_a_c;
+    //从配置文件中读取的 gyro noise density [rad/s/sqrt(Hz)]：σgc
+    //从配置文件中读取的 accelerometer noise density [m/s^2/sqrt(Hz)]：σac
 
     if (fabs(omega_S_0[0]) > imuParams.g_max
         || fabs(omega_S_0[1]) > imuParams.g_max
@@ -375,7 +378,8 @@ int ImuError::propagation(const okvis::ImuMeasurementDeque & imuMeasurements,
         || fabs(omega_S_1[0]) > imuParams.g_max
         || fabs(omega_S_1[1]) > imuParams.g_max
         || fabs(omega_S_1[2]) > imuParams.g_max) {
-      sigma_g_c *= 100;
+      sigma_g_c *= 100;// 读入的数据超过设定的最大值，不确定度乘 100
+
       LOG(WARNING) << "gyr saturation";
     }
 
@@ -384,14 +388,15 @@ int ImuError::propagation(const okvis::ImuMeasurementDeque & imuMeasurements,
         || fabs(acc_S_1[0]) > imuParams.a_max
         || fabs(acc_S_1[1]) > imuParams.a_max
         || fabs(acc_S_1[2]) > imuParams.a_max) {
-      sigma_a_c *= 100;
+      sigma_a_c *= 100;// 读入的数据超过设定的最大值，不确定度乘 100
+
       LOG(WARNING) << "acc saturation";
     }
 
     // actual propagation
     // orientation:
     Eigen::Quaterniond dq;
-    const Eigen::Vector3d omega_S_true = (0.5*(omega_S_0+omega_S_1) - speedAndBiases.segment<3>(3));
+    const Eigen::Vector3d omega_S_true = (0.5*(omega_S_0+omega_S_1) - speedAndBiases.segment<3>(3));//角速度设为时间 t0 和 t1 平均值 - bias.
     const double theta_half = omega_S_true.norm() * 0.5 * dt;
     const double sinc_theta_half = ode::sinc(theta_half);
     const double cos_theta_half = cos(theta_half);
@@ -401,11 +406,11 @@ int ImuError::propagation(const okvis::ImuMeasurementDeque & imuMeasurements,
     // rotation matrix integral:
     const Eigen::Matrix3d C = Delta_q.toRotationMatrix();
     const Eigen::Matrix3d C_1 = Delta_q_1.toRotationMatrix();
-    const Eigen::Vector3d acc_S_true = (0.5*(acc_S_0+acc_S_1) - speedAndBiases.segment<3>(6));
+    const Eigen::Vector3d acc_S_true = (0.5*(acc_S_0+acc_S_1) - speedAndBiases.segment<3>(6));//加速度设为时间 t0 和 t1 平均值 - bias
     const Eigen::Matrix3d C_integral_1 = C_integral + 0.5*(C + C_1)*dt;
     const Eigen::Vector3d acc_integral_1 = acc_integral + 0.5*(C + C_1)*acc_S_true*dt;
     // rotation matrix double integral:
-    C_doubleintegral += C_integral*dt + 0.25*(C + C_1)*dt*dt;
+    C_doubleintegral += C_integral*dt + 0.25*(C + C_1)*dt*dt;//加上他的增量
     acc_doubleintegral += acc_integral*dt + 0.25*(C + C_1)*acc_S_true*dt*dt;
 
     // Jacobian parts
